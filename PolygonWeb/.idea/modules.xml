@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PolygonGameApp.iml" filepath="$PROJECT_DIR$/PolygonGameApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PolygonWeb.iml" filepath="$PROJECT_DIR$/PolygonWeb.iml" />
     </modules>
   </component>
 </project>
