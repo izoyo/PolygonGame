@@ -11,7 +11,7 @@
     <title>登录与注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="./signup.css" type="text/css" media="all">
+    <link rel="stylesheet" href="src/signup.css" type="text/css" media="all">
 </head>
 
 <body>
@@ -19,29 +19,31 @@
 <div class="container">
     <div class="login">
         <h2>登 录</h2>
-        <form action="/Signup" method="post">
-            <input type="text" Name="username" placeholder="用户名" required="">
-            <input type="password" Name="password" placeholder="密码" required="">
+        <form action="Login" method="post">
+            <input type="text" Name="username" placeholder="用户名" required>
+            <input type="password" Name="password" placeholder="密码" required>
+
+            <div class="send-button">
+                <form>
+                    <input type="submit" value="登 录">
+                </form>
+            </div>
         </form>
-        <div class="send-button">
-            <form>
-                <input type="submit" value="登 录">
-            </form>
-        </div>
     </div>
 
 
     <div class="register">
         <h2>注 册</h2>
-        <form action="/Signup" method="post">
-            <input type="text" Name="username" placeholder="用户名" required="">
-            <input type="password" Name="password" placeholder="密码" required="">
+        <form action="Signup" method="post">
+            <input type="text" Name="username" placeholder="用户名" required>
+            <input type="password" Name="password" placeholder="密码" required>
+
+            <div class="send-button">
+                <form>
+                    <input type="submit" value="注册">
+                </form>
+            </div>
         </form>
-        <div class="send-button">
-            <form>
-                <input type="submit" value="注册">
-            </form>
-        </div>
         <div class="clear"></div>
 </div>
 <div class="clear"></div>
