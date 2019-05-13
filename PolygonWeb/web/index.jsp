@@ -23,7 +23,7 @@ for (Cookie c:cookies){
   }
 }
 if(name!=null&&pwd!=null){
- out.println("欢迎回来"+name);
+ out.println("欢迎萨芬悲剧啊设备开发哈桑了回来"+name);
 }else{
   request.getRequestDispatcher("signup.jsp").forward(request,response);
 }
