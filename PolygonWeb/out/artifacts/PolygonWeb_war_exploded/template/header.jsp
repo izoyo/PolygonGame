@@ -1,7 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.net.*" %>
-<%@ page import="java.util.*"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+
 <%
+    final long serialVersionUID = 1L;
+    // JDBC 驱动名及数据库 URL
+    final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    final String DB_URL = "jdbc:mysql://localhost:3306/polygongame?characterEncoding=utf-8";
+
+    final String USER = "root";
+    final String PASS = "youyaang520";
+
     Cookie[] cookies = request.getCookies();
     String name=null, pwd=null;
     for (Cookie c:cookies){
@@ -14,8 +24,41 @@
     if(name == null || pwd == null){
         response.sendRedirect("signup.jsp");
     }
+
+    String user_name = name;
+    int user_points = 0;
+
+    Connection conn;
+
+    Class.forName(JDBC_DRIVER);
+    conn = DriverManager.getConnection(DB_URL, USER, PASS);
+    try {
+
+
+        String sql = "SELECT * FROM dbuser WHERE user = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setString(1, name);
+
+        ResultSet rs = ps.executeQuery();
+
+        if(rs.next()){
+            user_name = rs.getString("name");
+            user_points = rs.getInt("points");
+        }
+
+        rs.close();
+        ps.close();
+
+//        conn.close();
+    }catch (Exception e) {
+        e.printStackTrace();
+    }
+
+
 %>
+
 <html>
+
 <head>
     <title>Polygon</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
@@ -32,29 +75,6 @@
     </div>
 </div>
 <hr>
-
-<%--<nav class="navbar navbar-expand-sm bg-light navbar-light fixed-top" id="n-head">--%>
-<%--    <a class="navbar-brand" href="index.jsp">多边形游戏</a>--%>
-<%--    <ul class="navbar-nav mr-auto">--%>
-<%--        <li class="nav-item">--%>
-<%--            <a class="nav-link" href="pk.jsp">匹配</a>--%>
-<%--        </li>--%>
-<%--        <li class="nav-item">--%>
-<%--            <a class="nav-link" href="rank.jsp">天梯</a>--%>
-<%--        </li>--%>
-
-<%--    </ul>--%>
-<%--    <ul class="navbar-nav">--%>
-<%--        <li class="nav-item dropdown">--%>
-<%--            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">用户名</a>--%>
-<%--            <div class="dropdown-menu">--%>
-<%--                <a class="dropdown-item" href="info.jsp">信息</a>--%>
-<%--                <a class="dropdown-item" href="signup.jsp">注销</a>--%>
-<%--            </div>--%>
-<%--        </li>--%>
-<%--    </ul>--%>
-<%--</nav>--%>
-
 <%
     String Headmsg = null;
     for (Cookie c:cookies){
@@ -80,7 +100,7 @@
 
             <div class="row">
                 <div class="col-sm-6">
-                    <a href="pk.jsp" class="btn btn-outline-dark btn-lg" role="button">匹配</a>
+                    <a href="pk.jsp" class="btn btn-outline-dark btn-lg" role="button">大厅</a>
                 </div>
                 <div class="col-sm-6">
                     <a href="rank.jsp" class="btn btn-outline-dark btn-lg" role="button">天梯</a>
@@ -97,16 +117,25 @@
             </div>
             <hr>
             <div class="row">
+
                 <div class="col-sm-12 m-3 " style="font-size: 20px;">
-                    <p>账号：12333</p>
-                    <p>用户名：小仙</p>
-                    <p>积分：123</p>
+                    <p>账号：<%=name%></p>
+                    <p>用户名：<%=user_name%></p>
+                    <p>积分：<%=user_points%></p>
                 </div>
+
             </div>
         </div>
         <div class="col-sm-10">
 
 
+<%--
+conn
+name
+user_name
+user_points
 
 
 
+
+--%>

@@ -1,0 +1,10 @@
+.rankitem{
+    display: flex;
+    margin: auto;
+    justify-content: space-between;
+}
+
+.points{
+    margin: auto 0px;
+    font-size: 18px;
+}

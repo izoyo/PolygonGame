@@ -20,7 +20,16 @@
 </head>
 <%
     // 解决中文乱码的问题
-    int err = Integer.parseInt(request.getParameter("err"));
+    int err = 0;
+    try {
+        Cookie c = new Cookie("username","");
+        c.setMaxAge(0);
+        response.addCookie(c);
+
+        err = Integer.parseInt(request.getParameter("err"));
+    }catch (Exception e){
+        System.out.println(e.toString());
+    }
 
 %>
 <body>
@@ -57,7 +66,8 @@
     <div class="register">
         <h2>注 册</h2>
         <form action="Signup" method="post">
-            <input type="text" Name="username" placeholder="用户名" required>
+            <input type="text" Name="username" placeholder="账号" required>
+            <input type="text" Name="name" placeholder="用户名" required>
             <input type="password" Name="password" placeholder="密码" required>
 
             <div class="send-button">

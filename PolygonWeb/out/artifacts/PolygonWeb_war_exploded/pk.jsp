@@ -6,10 +6,10 @@
 <div class="card">
 
     <div class="card-header">
-        公告
+        大厅
     </div>
     <div class="card-body">
-        多边形游戏 V1
+        内容
     </div>
 
 </div>

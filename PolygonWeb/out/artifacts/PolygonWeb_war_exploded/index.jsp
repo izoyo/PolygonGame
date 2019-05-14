@@ -6,10 +6,10 @@
 <div class="card">
 
     <div class="card-header">
-        头部
+        公告
     </div>
     <div class="card-body">
-        内容
+        多边形游戏 V1
     </div>
 
 </div>
