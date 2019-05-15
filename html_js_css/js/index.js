@@ -87,3 +87,17 @@ function getBestScore() {
 		return bestScore;
 	}
 }
+
+/**
+* 获取完成游戏的耗时（返回时间单位"秒"s）
+* 	注：游戏未完成会返回-1.
+*/
+function getFinishTime() {
+	if(!isEnd()) {
+		console.log("time : " + -1);
+		return 0;
+	} else {
+		console.log("time : " + getConsumeTime());
+		return getConsumeTime();
+	}
+}
