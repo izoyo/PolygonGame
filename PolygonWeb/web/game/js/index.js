@@ -8,7 +8,7 @@ var isGameStart = false;
 * canBack: 能否悔步
 * 注：顶点数组与边操作符数组都是从1开始编号，0为空
 */
-function start(N, v, op, isShow, canBack) {
+function start(N_j, v_j, op_j, isShow, canBack) {
 	// // 测试数据可删除
 	// var isShow = true;
 	// // 测试数据可删除
@@ -19,9 +19,9 @@ function start(N, v, op, isShow, canBack) {
 	// var testOp = ["","+","*","+","+","*","*"];
 	// // 测试数据可删除
 	// var testV = [0,-444,123,-9943,7052,-2045,5737];
-	// N = testN;
-	// v = testV;
-	// op = testOp;
+	N = N_j;
+	v = v_j;
+	op = op_j;
 
 	// 隐藏showBest画布
 	document.getElementById("showBest").style.display = "none";
@@ -89,9 +89,9 @@ function getBestScore() {
 }
 
 /**
- * 获取完成游戏的耗时（返回时间单位"秒"s）
- * 	注：游戏未完成会返回-1.
- */
+* 获取完成游戏的耗时（返回时间单位"秒"s）
+* 	注：游戏未完成会返回-1.
+*/
 function getFinishTime() {
 	if(!isEnd()) {
 		console.log("time : " + -1);

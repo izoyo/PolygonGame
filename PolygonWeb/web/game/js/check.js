@@ -1,10 +1,14 @@
 check_flag_end = false;// 游戏结束
 
 function gameCheaker() {
+    if(isTrain)
+        return;
+
     if (check_flag_end) {
         document.getElementById("playBoard").style.display = "none";
         document.getElementById("tipEnd").style.display = "block";
         document.getElementById("tipScore").innerText = getScore();
+        document.getElementById("useTime").innerText = getFinishTime();
         return;
     }
 

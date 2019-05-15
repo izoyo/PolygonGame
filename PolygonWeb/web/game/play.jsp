@@ -20,12 +20,20 @@ match 比赛ID
     final String PASS = "youyaang520";
     Connection conn;
 
-    System.out.println(request.getParameter("canBack") + "," + request.getParameter("showAns"));
+//    System.out.println(request.getParameter("canBack") + "," + request.getParameter("showAns"));
     String canBackstr = request.getParameter("canBack");
     String showAnsstr = request.getParameter("showAns");
     String user = request.getParameter("user");
     int roomId = Integer.parseInt(request.getParameter("roomid"));
     int matchId = Integer.parseInt(request.getParameter("matchid"));
+
+    boolean isTrain = false;
+    if(request.getParameter("isTrain")!=null){
+        isTrain = true;
+        canBackstr = "1";
+        showAnsstr = "1";
+    }
+
 
     ResultSet rsMatch;
     try {
@@ -58,10 +66,10 @@ match 比赛ID
 <body>
 <div id="tipEnd" hidden>
     <p>游戏结束！</p>
-    得分：<span id="tipScore"></span>
+    得分：<span id="tipScore"></span>， 耗时<span id="useTime"></span>秒
 </div>
 <div id="playBoard">
-    <button onclick="start()" <%=(showAnsstr.equals("0") ? "hidden" : "")%>>重新开始</button>
+    <button onclick="start(data_Length, data_Num, data_Bor, data_Show, data_Back)" <%=(showAnsstr.equals("0") ? "hidden" : "")%>>重新开始</button>
 
     <div id="parttwo" style="display: none">
         <!-- 玩家画布 -->
@@ -100,6 +108,9 @@ match 比赛ID
 <script src="js/check.js"></script>
 
 <script type="text/javascript">
+
+    isTrain = <%=isTrain%>;
+
     matchId = <%=matchId%>;
     user = "<%=user%>";
     starTime = <%=rsMatch.getLong("time")%>;
@@ -109,8 +120,9 @@ match 比赛ID
     data_Length = <%=rsMatch.getInt("length")%>;
     data_Show = <%=(showAnsstr.equals("0") ? "false" : "true")%>;
     data_Back = <%=(canBackstr.equals("0") ? "false" : "true")%>;
-    console.log(data_Length, data_Num, data_Bor, data_Show, data_Back);
+    // console.log(data_Length, data_Num, data_Bor, data_Show, data_Back);
     gameCheaker();
+
     start(data_Length, data_Num, data_Bor, data_Show, data_Back);
     intCheck = self.setInterval("gameCheaker()", 1000);
 </script>

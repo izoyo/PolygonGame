@@ -174,8 +174,8 @@ function point(ctx,value,x,y){
             var radis = this.value.toString().length
             this.ctx.arc(this.x,this.y,(radis+4)*2,5*Math.PI,0,true);
             this.ctx.fill();
-            this.ctx.font = "bolder 10px Arial";
-            this.ctx.fillStyle = "white";
+            this.ctx.font = "bolder 20px Arial";
+            this.ctx.fillStyle = "blue";
             this.ctx.fillText(this.value, this.x - radis*2, this.y + 4);
             if(x && y && this.ctx.isPointInPath(x,y)){
                 console.log('click the point')
@@ -195,6 +195,9 @@ function play(){
     done = 0;
     if(showInterval!=null) {
         clearInterval(showInterval);        
+    }
+    if(playInterval!=null) {
+        clearInterval(playInterval);        
     }
     
     getcoor();
@@ -356,24 +359,22 @@ function drawScore(score){
     done = 1;
 }
 
-function drawtime(){
-   playInterval = setInterval(function () {
-        if(done == 0)
-            gametime++
-        var value = ""
-        var m=parseInt(gametime/60);
-        var s=parseInt(gametime%60);
-        value=toDub(m)+":"+toDub(s);
-        ctx.clearRect(0, 0, 100, 30);
-        ctx.font = "bolder 20px Arial";
-        ctx.fillStyle = "black";
-        ctx.fillText(value,20,20);
-    },1000/60);
-
-    function toDub(n){
-        return n<10?"0"+n:""+n;
-    }
-
+function drawtime() {
+	playInterval = setInterval(function () {
+	    if(done == 0)
+	        gametime++
+	    var value = ""
+	    var s=parseInt(gametime);
+	    if(s%10 == 0) {
+	    	value = (s/10)+".0s"
+	    } else {
+		    value = (s/10)+"s";	    	
+	    }
+	    ctx.clearRect(0, 0, 100, 30);
+	    ctx.font = "bolder 20px Arial";
+	    ctx.fillStyle = "black";
+	    ctx.fillText(value,20,20);
+	},100);
 }
 
 
@@ -424,5 +425,5 @@ function getCurrentScore() {
 }
 
 function getConsumeTime() {
-    return gametime;
+	return (gametime/10);
 }

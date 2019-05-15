@@ -132,6 +132,13 @@ public class GameServlet extends HttpServlet {
                         ps.close();
                     }
 
+                    ps = conn.prepareStatement("INSERT INTO dbtalk VALUES (null, ?, ?, ?, ?);");
+                    ps.setInt(1, roomId);
+                    ps.setString(2, "<span class=\"text-danger\">系统</span>");
+                    ps.setString(3, "游戏即将开始！");
+                    ps.setLong(4, System.currentTimeMillis() / 1000);
+                    ps.executeUpdate();
+
                     break;
                 case "up":
                     int mactchId = Integer.parseInt(request.getParameter("matchid"));
@@ -145,6 +152,7 @@ public class GameServlet extends HttpServlet {
                     ps.setInt(4, mactchId);
                     flag = ps.executeUpdate();
                     System.out.println("战绩：" + flag);
+
                     break;
                 case "getLatest":
                     Long rTime = 0L;

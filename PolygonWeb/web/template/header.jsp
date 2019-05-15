@@ -73,7 +73,7 @@
 <div class="jumbotron" id="j-head">
     <div class="container">
         <h2>🖇️多边形游戏</h2>
-        <p> - 算法设计与分析项目</p>
+        <p> - 算法设计与分析 第22组项目</p>
     </div>
 </div>
 <hr>

@@ -34,6 +34,7 @@
     var xmlhttpMsg;
     var starAtTime; // 游戏开始时间
     var roomStatus; // 房间状态 0 准备中 1 游戏中 2 被删除
+    var msgId = 0; // 当前最新信息id
 
     if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
@@ -43,21 +44,64 @@
         xmlhttpMsg = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
     }
 
+    function confirmDel() {
+        var msg = "您真的确定要删除吗？\n不删除请取消。";
+        if (confirm(msg)==true){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function EnterPress(e){
+        // 兼容FF和IE和Opera
+        var event = e || window.event;
+        var key = event.which || event.keyCode || event.charCode;
+        if (key == 13) {
+            sendMsg();
+        }
+    }
+
     function sendMsg() {
         var msg = document.getElementById("msgInput").value;
-        if(msg == "")
+        if (msg == "")
             return;
         xmlhttpMsg.open("POST", "Talk", true);
         xmlhttpMsg.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttpMsg.send("ac=send&roomid=<%=user_room%>&user=<%=name%>&msg=" + msg);
+        xmlhttpMsg.send("ac=send&roomid=<%=user_room%>&name=<%=user_name%>&msg=" + msg);
         console.log("send", msg);
         document.getElementById("msgInput").value = "";
     }
+
     function starGame(rid) {
         xmlhttp.open("POST", "Game", true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.send("ac=star&room=" + rid);
         console.log("开始游戏");
+    }
+
+    function getMsg(min, max) {
+        var xmlhttpGet;
+        if (window.XMLHttpRequest) {
+            xmlhttpGet = new XMLHttpRequest();
+        } else {
+            xmlhttpGet = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttpGet.open("POST", "Talk", true);
+        xmlhttpGet.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttpGet.onreadystatechange = function () {
+            if (xmlhttpGet.readyState===4 && xmlhttpGet.status===200){
+                var msgItem = xmlhttpGet.responseText;
+                if (msgItem !== "") {
+                    var div = document.getElementById("talkhistory");
+                    div.innerHTML = document.getElementById("talkhistory").innerHTML + msgItem;
+                    div.scrollTop = div.scrollHeight; // 滚动条最底
+                }
+            }
+
+        }
+        xmlhttpGet.send("ac=get&roomid=<%=user_room%>&min=" + min + "&max=" + max);
+
     }
 
     function heartBeat() {
@@ -96,22 +140,28 @@
         xmlhttp.open("POST", "Game", true);
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200 && xmlhttp.responseText != "") {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200 && xmlhttp.responseText !== "") {
                 json = JSON.parse(xmlhttp.responseText);
-                if (starAtTime != parseInt(json.starat)) {
+                if (starAtTime !== parseInt(json.starat)) {
                     starAtTime = parseInt(json.starat);
                     console.log("star", starAtTime);
                 }
                 var oldStatus = roomStatus;
-                if (roomStatus != parseInt(json.status)) {
+                if (roomStatus !== parseInt(json.status)) {
                     roomStatus = parseInt(json.status);
                     console.log("room", roomStatus);
-                    if(roomStatus == 0 && oldStatus == 1){
+                    if (roomStatus === 0 && oldStatus === 1) {
                         location.reload();
                     }
                 }
-                if (parseInt(json.end)==1 && document.getElementById("hostStarButton") != null) {
+                if (parseInt(json.end) === 1 && document.getElementById("hostStarButton") != null) {
                     location.reload();
+                }
+                var oldmsgid = msgId;
+                if (parseInt(json.msgid) > msgId) {
+                    msgId = parseInt(json.msgid);
+                    getMsg(oldmsgid, msgId);
+
                 }
             }
         }
@@ -210,6 +260,13 @@
                             ps = conn.prepareStatement("UPDATE dbroom SET status=0,nowMatch=0 WHERE id=?");
                             ps.setInt(1, user_room);
                             ps.executeUpdate();
+
+                            ps = conn.prepareStatement("INSERT INTO dbtalk VALUES (null, ?, ?, ?, ?);");
+                            ps.setInt(1, user_room);
+                            ps.setString(2, "<span class=\"text-danger\">系统</span>");
+                            ps.setString(3, "游戏结算完毕！");
+                            ps.setLong(4, System.currentTimeMillis() / 1000);
+                            ps.executeUpdate();
                         }
 
                     }
@@ -259,7 +316,7 @@
             <%
                 if (hostUser.equals(name)) {
             %>
-            <a href="Room?ac=exit" role="button" class="btn btn-danger">删除房间</a>
+            <a href="Room?ac=exit" role="button" class="btn btn-danger" onclick="javascript:return confirmDel()">删除房间</a>
 
             <%
             } else {
@@ -296,12 +353,12 @@
             %>
         </div>
 
-        <div class="col-sm-12 p-2" style="height:300px;overflow:auto;">
-            聊天记录
+        <div class="col-sm-12 p-2" style="height:300px;overflow:auto;" id="talkhistory">
+            <h3>聊天记录</h3>
         </div>
 
         <div class="input-group m-3">
-            <input type="text" class="form-control" Name="msg" placeholder="" id="msgInput" required>
+            <input type="text" class="form-control" Name="msg" placeholder="" id="msgInput" onkeypress="EnterPress(event)" required>
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button" onclick="sendMsg()">发送</button>
             </div>

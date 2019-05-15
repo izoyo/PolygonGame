@@ -2,6 +2,10 @@
 
 <%@include file="template/header.jsp" %>
 <%
+    boolean isTrain = false;
+    if(request.getParameter("isTrain")!=null){
+        isTrain = true;
+    }
     try {
 
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM dbroom WHERE id=?");
@@ -14,11 +18,19 @@
 <div class="card" id="gameFrame">
     <ul class="breadcrumb">
         <li class="breadcrumb-item"><a href="pk.jsp">大厅</a></li>
+        <%
+            if (!isTrain){
+        %>
         <li class="breadcrumb-item"><a href="room.jsp"><%=user_room%>号房间</a></li>
         <li class="breadcrumb-item active">游戏中</li>
+        <%
+            }else {
+                out.println("<li class=\"breadcrumb-item active\">训练中</li>");
+            }
+        %>
     </ul>
 
-    <iframe src="game/play.jsp?user=<%=name%>&roomid=<%=user_room%>&matchid=<%=rsRoom.getString("nowMatch")%>&canBack=<%=rsRoom.getString("canBack")%>&showAns=<%=rsRoom.getString("showAns")%>"
+    <iframe src="game/play.jsp?<%=isTrain?"isTrain=1&":""%>user=<%=name%>&roomid=<%=user_room%>&matchid=<%=isTrain?request.getParameter("matchid"):rsRoom.getString("nowMatch")%>&canBack=<%=rsRoom.getString("canBack")%>&showAns=<%=rsRoom.getString("showAns")%>"
             width=100% height=600>
     </iframe>
 </div>

@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.*;
+import java.text.SimpleDateFormat;
 
 @WebServlet(name = "talkServlet", urlPatterns = {"/Talk"})
 public class talkServlet extends HttpServlet {
@@ -24,7 +26,7 @@ public class talkServlet extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
 
             String action = request.getParameter("ac");
-            String user;
+            String username;
 
             Class.forName(JDBC_DRIVER);
             Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -32,15 +34,31 @@ public class talkServlet extends HttpServlet {
 
             switch (action) {
                 case "send":
-                    user = request.getParameter("user");
-                    String msg = request.getParameter("msg");
+                    username = new String(request.getParameter("name").getBytes("ISO8859-1"), "UTF-8");
+                    String msg = new String(request.getParameter("msg").getBytes("ISO8859-1"), "UTF-8");
                     int roomId = Integer.parseInt(request.getParameter("roomid"));
                     ps = conn.prepareStatement("INSERT INTO dbtalk VALUES (null, ?, ?, ?, ?);");
                     ps.setInt(1, roomId);
-                    ps.setString(2, user);
+                    ps.setString(2, username);
                     ps.setString(3, msg);
-                    ps.setLong(4,System.currentTimeMillis()/1000);
+                    ps.setLong(4, System.currentTimeMillis() / 1000);
                     ps.executeUpdate();
+                    break;
+                case "get":
+                    roomId = Integer.parseInt(request.getParameter("roomid"));
+                    int minId = Integer.parseInt(request.getParameter("min"));
+                    int maxId = Integer.parseInt(request.getParameter("max"));
+                    ps = conn.prepareStatement("SELECT * FROM dbtalk WHERE id>? AND id<=? AND roomid=?;");
+                    ps.setInt(1, minId);
+                    ps.setInt(2, maxId);
+                    ps.setInt(3, roomId);
+                    ResultSet rsMsg = ps.executeQuery();
+                    while (rsMsg.next()) {
+                        Long timeStamp = rsMsg.getLong("time")*1000;  //获取当前时间戳
+                        SimpleDateFormat sdf=new SimpleDateFormat("HH:mm:ss"); //yyyy-MM-dd
+                        String sd = sdf.format(new Date(timeStamp));      // 时间戳转换成时间
+                        response.getWriter().print("<p>[" + sd + "]" + rsMsg.getString("name") + " ： " + rsMsg.getString("msg") + "</p>");
+                    }
                     break;
                 default:
                     break;
