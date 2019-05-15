@@ -422,3 +422,7 @@ function getCurrentScore() {
         return 0;
     }
 }
+
+function getConsumeTime() {
+	return gametime;
+}
