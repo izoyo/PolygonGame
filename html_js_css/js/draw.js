@@ -146,7 +146,8 @@ function line(ctx,oper,idx,id,x1,y1,x2,y2){
         this.ctx.stroke();
         this.ctx.restore();
         this.ctx.font = "bolder 30px Arial";
-        this.ctx.fillStyle = "white";
+        // 边操作符的颜色
+        this.ctx.fillStyle = "red";
         this.ctx.fillText(this.oper,(this.x1+this.x2)/2,(this.y1+this.y2)/2);
     } 
 }
