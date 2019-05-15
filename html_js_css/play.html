@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Polygon Game</title>  
+</head>
+
+<body>
+	<button onclick="start()">start</button>
+
+	<div id="parttwo" style="display: none">
+		<!-- 玩家画布 -->
+		<canvas id="demo-canvas2" width="600" height="500"></canvas>
+		<!-- 按钮：显示最佳操作，会清空玩家的画布 -->
+		<button class="fa fa-play-circle fa-3x" aria-hidden="true" id = "showBestButton" onclick="showBest()">showBest</button>
+		<!-- 悔步按钮 -->
+		<button id = "goBackButton" onclick="history_back()">Back</button>
+	</div>
+
+	<!-- 显示最佳操作的div -->
+	<div id="showBest" style="display: none">
+		<canvas id="demo-canvas3" width="600" height="500"></canvas>
+	</div>
+		<!-- 测试按钮：用于测试是否已经结束，结果显示在console -->
+		<button id = "isEnd" onclick="isEnd()">isEnd</button>
+		<!-- 测试按钮：用于测试获取最终结果，结果显示在console -->
+		<button id = "getScore" onclick="getScore()">getScore</button>
+		<!-- 测试按钮：用于测试获取最佳操作的得分，结果显示在console -->
+		<button id = "getBestScore" onclick="getBestScore()">getBestScore</button>
+
+	<script src="js/index.js"></script>
+	<script type="text/javascript" src="js/draw.js"></script>
+	<script src="js/algorithm.js"></script>
+
+</body>
+</html>
