@@ -196,6 +196,9 @@ function play(){
     if(showInterval!=null) {
         clearInterval(showInterval);        
     }
+    if(playInterval!=null) {
+        clearInterval(playInterval);        
+    }
     
     getcoor();
 
@@ -356,24 +359,22 @@ function drawScore(score){
     done = 1;
 }
 
-function drawtime(){
-   playInterval = setInterval(function () {
-        if(done == 0)
-            gametime++
-        var value = ""
-        var m=parseInt(gametime/60);
-        var s=parseInt(gametime%60);
-        value=toDub(m)+":"+toDub(s);
-        ctx.clearRect(0, 0, 100, 30);
-        ctx.font = "bolder 20px Arial";
-        ctx.fillStyle = "black";
-        ctx.fillText(value,20,20);
-    },1000/60);
-
-    function toDub(n){
-        return n<10?"0"+n:""+n;
-    }
-
+function drawtime() {
+	playInterval = setInterval(function () {
+	    if(done == 0)
+	        gametime++
+	    var value = ""
+	    var s=parseInt(gametime);
+	    if(s%10 == 0) {
+	    	value = (s/10)+".0s"
+	    } else {
+		    value = (s/10)+"s";	    	
+	    }
+	    ctx.clearRect(0, 0, 100, 30);
+	    ctx.font = "bolder 20px Arial";
+	    ctx.fillStyle = "black";
+	    ctx.fillText(value,20,20);
+	},100);
 }
 
 
@@ -424,5 +425,5 @@ function getCurrentScore() {
 }
 
 function getConsumeTime() {
-	return gametime;
+	return (gametime/10);
 }
