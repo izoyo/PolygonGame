@@ -13,7 +13,9 @@ var ctx = canvas.getContext('2d');
 var ctx1 = canvas1.getContext('2d');
 var back = document.getElementById('back');
 var remainNum;// 剩余点数
-var isEndFlag; 
+var isEndFlag;
+var playInterval;// 玩家循环计时器
+var showInterval;// 最佳演示循环计时器
 
 //object
 
@@ -191,6 +193,9 @@ function play(){
     this.remainNum = coorlist.length;
     gametime = 0;
     done = 0;
+    if(showInterval!=null) {
+        clearInterval(showInterval);        
+    }
     
     getcoor();
 
@@ -206,9 +211,12 @@ function play(){
 
 //show the best path
 function showBest(){
+    if(playInterval!=null) {
+        clearInterval(playInterval);
+    }
     document.getElementById("parttwo").style.display = "none";
     document.getElementById("showBest").style.display = "inline";
-    setInterval("BestSoltion_draw()",500);
+    showInterval = setInterval("BestSoltion_draw()",1000);
 }
 
 function BestSoltion_draw(){
@@ -349,7 +357,7 @@ function drawScore(score){
 }
 
 function drawtime(){
-   setInterval(function () {
+   playInterval = setInterval(function () {
         if(done == 0)
             gametime++
         var value = ""
@@ -360,7 +368,6 @@ function drawtime(){
         ctx.font = "bolder 20px Arial";
         ctx.fillStyle = "black";
         ctx.fillText(value,20,20);
-        
     },1000/60);
 
     function toDub(n){
