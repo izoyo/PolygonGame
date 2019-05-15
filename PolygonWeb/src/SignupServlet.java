@@ -8,7 +8,7 @@ public class SignupServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     // JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/polygongame?characterEncoding=utf-8";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/polygongame?characterEncoding=utf-8&useSSL=false";
 
     static final String USER = "root";
     static final String PASS = "youyaang520";
@@ -41,7 +41,7 @@ public class SignupServlet extends HttpServlet {
             int flag = 0;
 
             if (!rs.next()) {//用户名冲突
-                String sql2 = "INSERT INTO dbuser VALUES(null, ?, ?, ?, 0, ?);";
+                String sql2 = "INSERT INTO dbuser VALUES(null, ?, ?, ?, 0, ?, 0);";
                 ps = conn.prepareStatement(sql2);
                 ps.setString(1, un);
                 ps.setString(2, up);
