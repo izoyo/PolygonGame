@@ -14,14 +14,17 @@
 
     Cookie[] cookies = request.getCookies();
     String name = null, pwd = null;
-    for (Cookie c : cookies) {
-        if (c.getName().equals("username")) {
-            name = c.getValue();
+
+    if (cookies != null)
+        for (Cookie c : cookies) {
+            if (c.getName().equals("username")) {
+                name = c.getValue();
+            }
+            if (c.getName().equals("password")) {
+                pwd = c.getValue();
+            }
         }
-        if (c.getName().equals("password")) {
-            pwd = c.getValue();
-        }
-    }
+
     if (name == null || pwd == null) {
         response.sendRedirect("signup.jsp");
     }
@@ -34,8 +37,6 @@
     Class.forName(JDBC_DRIVER);
     conn = DriverManager.getConnection(DB_URL, USER, PASS);
     try {
-
-
         String sql = "SELECT * FROM dbuser WHERE user = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.setString(1, name);
@@ -46,14 +47,14 @@
             user_name = rs.getString("name");
             user_points = rs.getInt("points");
             user_room = rs.getInt("room");
+            rs.close();
         }
 
-        rs.close();
         ps.close();
 
 //        conn.close();
     } catch (Exception e) {
-        e.printStackTrace();
+        System.out.println(e.toString());
     }
 
 
@@ -79,13 +80,17 @@
 <hr>
     <%
     String Headmsg = null;
-    for (Cookie c:cookies){
-        if(c.getName().equals("msg")){
-            Headmsg = URLDecoder.decode(c.getValue(), "utf-8");
-            c.setMaxAge(0);
-            response.addCookie(c);
+    if(cookies != null){
+        for (Cookie citem: cookies){
+            if(citem.getName().equals("msg")){
+                Headmsg = URLDecoder.decode(citem.getValue(), "utf-8");
+                citem.setMaxAge(0);
+                response.addCookie(citem);
+            }
         }
     }
+
+
 %>
 <div style="margin-top:80px; margin-bottom: 20px">
     <% if (Headmsg != null) { %>

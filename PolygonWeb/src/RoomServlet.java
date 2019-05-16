@@ -158,6 +158,14 @@ public class RoomServlet extends HttpServlet {
                     flag = ps.executeUpdate();
                     System.out.println("进房：" + flag);
                     response.sendRedirect("room.jsp");
+
+                    ps = conn.prepareStatement("INSERT INTO dbtalk VALUES (null, ?, ?, ?, ?);");
+                    ps.setInt(1, roomId);
+                    ps.setString(2, "<span class=\"text-danger\">系统</span>");
+                    ps.setString(3, userName + "进入房间。");
+                    ps.setLong(4, System.currentTimeMillis() / 1000);
+                    ps.executeUpdate();
+
                     break;
                 case "kick":
                     int kickId = Integer.parseInt(0 + request.getParameter("user"));
@@ -167,6 +175,7 @@ public class RoomServlet extends HttpServlet {
                     System.out.println("踢人：" + flag);
                     response.sendRedirect("room.jsp");
                     break;
+
                 case "exit":
                     roomId = rsUser.getInt("room");
 
@@ -174,6 +183,13 @@ public class RoomServlet extends HttpServlet {
                     ps.setString(1, userName);
                     flag = ps.executeUpdate();
                     System.out.println("退房：" + flag);
+
+                    ps = conn.prepareStatement("INSERT INTO dbtalk VALUES (null, ?, ?, ?, ?);");
+                    ps.setInt(1, roomId);
+                    ps.setString(2, "<span class=\"text-danger\">系统</span>");
+                    ps.setString(3, userName + "退出房间。");
+                    ps.setLong(4, System.currentTimeMillis() / 1000);
+                    ps.executeUpdate();
 
                     //看看有没有建的房
                     ps = conn.prepareStatement("SELECT * FROM dbroom WHERE id = ? AND user = ? AND status<>2");

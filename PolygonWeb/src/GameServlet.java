@@ -194,7 +194,14 @@ public class GameServlet extends HttpServlet {
                     rs.next();
                     msgId = rs.getInt(1);
 
-                    response.getWriter().println("{\"msg\":\"star\",\"starat\":\"" + rTime + "\", \"status\":\"" + rStatus + "\", \"end\":\"" + gameEnd + "\",\"msgid\":\"" + msgId + "\"}");
+                    int roomPeoNum = 0;
+                    ps = conn.prepareStatement("SELECT count(*) FROM dbuser WHERE room = ?;");
+                    ps.setInt(1, roomId);
+                    rs = ps.executeQuery();
+                    rs.next();
+                    roomPeoNum = rs.getInt(1);
+
+                    response.getWriter().println("{\"msg\":\"star\",\"starat\":\"" + rTime + "\", \"status\":\"" + rStatus + "\", \"end\":\"" + gameEnd + "\",\"msgid\":\"" + msgId + "\",\"roomPeoNum\":\"" + roomPeoNum + "\"}");
                     break;
                 default:
                     break;
