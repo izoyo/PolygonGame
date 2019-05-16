@@ -123,7 +123,17 @@ public class RoomServlet extends HttpServlet {
 
                 case "join":
                     int roomId = Integer.parseInt(0 + request.getParameter("id"));
-
+                    if(rsUser.getInt("room") == roomId){
+                        response.sendRedirect("room.jsp");
+                        break;
+                    }
+                    if(rsUser.getInt("room")>0){
+                        cookie = new Cookie("msg", URLEncoder.encode("当前已在房间，不能加入别的", "utf-8"));
+                        cookie.setMaxAge(60);
+                        response.addCookie(cookie);
+                        response.sendRedirect("room.jsp");
+                        break;
+                    }
                     ps = conn.prepareStatement("SELECT * FROM dbroom WHERE id = ?");
                     ps.setInt(1, roomId);
                     ResultSet reRoom = ps.executeQuery();

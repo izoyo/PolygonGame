@@ -61,28 +61,32 @@ match 比赛ID
 <head>
     <meta charset="UTF-8">
     <title>Polygon Game</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-<div id="tipEnd" hidden>
+<div id="tipEnd" style="display: none;">
     <p>游戏结束！</p>
     得分：<span id="tipScore"></span>， 耗时<span id="useTime"></span>秒
 </div>
 <div id="playBoard">
-    <button onclick="start(data_Length, data_Num, data_Bor, data_Show, data_Back)" <%=(showAnsstr.equals("0") ? "hidden" : "")%>>重新开始</button>
+    <button type="button" class="btn btn-primary" onclick="start(data_Length, data_Num, data_Bor, data_Show, data_Back)" <%=(showAnsstr.equals("0") ? "hidden" : "")%>>重新开始</button>
 
     <div id="parttwo" style="display: none">
         <!-- 玩家画布 -->
         <canvas id="demo-canvas2" width="600" height="500"></canvas>
         <!-- 按钮：显示最佳操作，会清空玩家的画布 -->
-        <button class="fa fa-play-circle fa-3x" aria-hidden="true" id="showBestButton"
+        <button  type="button" class="fa fa-play-circle fa-3x btn btn-primary" aria-hidden="true" id="showBestButton"
                 onclick="showBest()" <%=(showAnsstr.equals("0") ? "hidden" : "")%>>
             展示最佳
         </button>
 
 
         <!-- 悔步按钮 -->
-        <button id="goBackButton"
+        <button  type="button" class="btn btn-primary" id="goBackButton"
                 onclick="history_back()" <%=(canBackstr.equals("0") ? "hidden" : "")%>>
             退一步
         </button>
