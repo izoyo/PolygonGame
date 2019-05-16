@@ -7,15 +7,15 @@
 
 #### 技术栈
 
-![](screenshot\stack.png)
+![](./screenshot/stack.png)
 
 
 
 #### 架构
 
-![](screenshot\services.png)
+![](./screenshot/services.png)
 
-![](screenshot\frame.png)
+![](./screenshot/frame.png)
 
 
 
@@ -23,20 +23,20 @@
 
 ##### 主页
 
-![](screenshot\index.png)
+![](./screenshot/index.png)
 
 ##### 排行榜
 
-![](screenshot\rank.png)
+![](./screenshot/rank.png)
 
 ##### 大厅
 
-![](screenshot\room.png)
+![](./screenshot/room.png)
 
 ##### 房间
 
-![](screenshot\room2.png)
+![](./screenshot/room2.png)
 
 ##### 游戏
 
-![](screenshot\play.png)
+![](./screenshot/play.png)
